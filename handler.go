@@ -76,7 +76,7 @@ func hset(args []Value) Value {
 	HSETs[hash][key] = value
 	HSETSMu.Unlock()
 
-	return Value{typ: "string", str: "OK"}
+	return Value{typ: "number", num: 1}
 }
 
 func hget(args []Value) Value {

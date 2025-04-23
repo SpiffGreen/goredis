@@ -34,6 +34,8 @@ func (v Value) Marshal() []byte {
 		return v.marshalBulk()
 	case "string":
 		return v.marshalString()
+	case "number":
+		return v.marshalInteger()
 	case "null":
 		return v.marshalNull()
 	case "error":
@@ -86,6 +88,15 @@ func (v Value) marshalError() []byte {
 
 func (v Value) marshalNull() []byte {
 	return []byte("$-1\r\n")
+}
+
+func (v Value) marshalInteger() []byte {
+	var bytes []byte
+	bytes = append(bytes, INTEGER)
+	bytes = append(bytes, []byte(strconv.Itoa(v.num))...)
+	bytes = append(bytes, '\r', '\n')
+
+	return bytes
 }
 
 type Resp struct {
@@ -141,7 +152,7 @@ func (r *Resp) readArray() (Value, error) {
 
 	// foreach line, parse and read the value
 	v.array = make([]Value, 0)
-	for _ = range len {
+	for range len {
 		val, err := r.Read()
 		if err != nil {
 			return v, err
