@@ -60,10 +60,7 @@ func (r *RedisServer) readLoop(conn net.Conn) {
 	defer conn.Close()
 
 	for {
-		buf := make([]byte, 1024)
-
-		// read messages from client
-		n, err := conn.Read(buf)
+		err := readInstructions(conn)
 		if err != nil {
 			if err == io.EOF {
 				break
@@ -72,11 +69,6 @@ func (r *RedisServer) readLoop(conn net.Conn) {
 			os.Exit(1)
 		}
 
-		msg := buf[:n]
-
-		response := readInstructions(msg)
-
-		conn.Write(response)
 	}
 }
 
