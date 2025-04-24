@@ -38,38 +38,38 @@ You can then connect to the server using any Redis client, including the officia
 ## Potential Improvements
 
 1. Data Persistence
-   - [] Add support for saving data to disk
-   - [] Implement Redis RDB-style persistence
-   - [] Add AOF (Append Only File) logging
+   - [ ] Add support for saving data to disk
+   - [ ] Implement Redis RDB-style persistence
+   - [ ] Add AOF (Append Only File) logging
 
 2. Additional Commands
-   - [] Add support for Lists (LPUSH, RPUSH, LRANGE, etc.)
-   - [] Add support for Sets (SADD, SMEMBERS, etc.)
-   - [] Add support for Sorted Sets (ZADD, ZRANGE, etc.)
-   - [] Implement expiration for keys (EXPIRE, TTL)
+   - [ ] Add support for Lists (LPUSH, RPUSH, LRANGE, etc.)
+   - [ ] Add support for Sets (SADD, SMEMBERS, etc.)
+   - [ ] Add support for Sorted Sets (ZADD, ZRANGE, etc.)
+   - [ ] Implement expiration for keys (EXPIRE, TTL)
 
 3. Enhanced Features
-   - [] Add support for pub/sub messaging
-   - [] Implement transactions (MULTI, EXEC, WATCH)
-   - [] Add authentication (AUTH command)
-   - [] Add database selection (SELECT command)
+   - [ ] Add support for pub/sub messaging
+   - [ ] Implement transactions (MULTI, EXEC, WATCH)
+   - [ ] Add authentication (AUTH command)
+   - [ ] Add database selection (SELECT command)
 
 4. Performance Improvements
-   - [] Implement connection pooling
-   - [] Add support for pipelining
-   - [] Optimize memory usage
-   - [] Add benchmarking tools
+   - [ ] Implement connection pooling
+   - [ ] Add support for pipelining
+   - [ ] Optimize memory usage
+   - [ ] Add benchmarking tools
 
 5. Operational Improvements
-   - [] Add proper logging and monitoring
-   - [] Implement graceful shutdown
-   - [] Add configuration file support
-   - [] Add metrics and statistics commands (INFO)
+   - [ ] Add proper logging and monitoring
+   - [ ] Implement graceful shutdown
+   - [ ] Add configuration file support
+   - [ ] Add metrics and statistics commands (INFO)
 
 6. Error Handling
-   - [] Improve error messages and handling
-   - [] Add better validation for commands
-   - [] Implement proper timeout handling
+   - [ ] Improve error messages and handling
+   - [ ] Add better validation for commands
+   - [ ] Implement proper timeout handling
 
 ## Contributing
 
