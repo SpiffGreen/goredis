@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net"
 	"os"
+	"strings"
 )
 
 var serverPort = flag.String("port", "6379", "Redis server port")
@@ -39,12 +40,32 @@ func (r *RedisServer) Run() {
 
 	r.ln = ln
 
-	go r.acceptLoop()
+	// Setup data persistence
+	aof, err := NewAof("db.aof")
+	if err != nil {
+		log.Fatalln("Error starting server", err)
+	}
+	defer aof.Close()
+
+	aof.Read(func(value Value) {
+		command := strings.ToUpper(value.array[0].bulk)
+		args := value.array[1:]
+
+		handler, ok := Handlers[command]
+		if !ok {
+			slog.Error("Corrupt db.aof file")
+			return
+		}
+
+		handler(args)
+	})
+
+	go r.acceptLoop(aof)
 
 	<-r.quitch
 }
 
-func (r *RedisServer) acceptLoop() {
+func (r *RedisServer) acceptLoop(aof *Aof) {
 	for {
 		conn, err := r.ln.Accept()
 		if err != nil {
@@ -52,20 +73,20 @@ func (r *RedisServer) acceptLoop() {
 			continue
 		}
 
-		go r.readLoop(conn)
+		go r.readLoop(conn, aof)
 	}
 }
 
-func (r *RedisServer) readLoop(conn net.Conn) {
+func (r *RedisServer) readLoop(conn net.Conn, aof *Aof) {
 	defer conn.Close()
 
 	for {
-		err := readInstructions(conn)
+		err := readInstructions(conn, aof)
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
-			fmt.Print("Error reading from client: ", err.Error())
+			slog.Error("Error reading from client: ", "err", err)
 			os.Exit(1)
 		}
 
@@ -77,7 +98,7 @@ func main() {
 	redisServer := NewRedisServer(Config{
 		port: *serverPort,
 	})
-	fmt.Printf("Server running on port %s\n", redisServer.port)
+	slog.Info(fmt.Sprintf("Server running on port %s\n", redisServer.port))
 	redisServer.Run()
 
 }

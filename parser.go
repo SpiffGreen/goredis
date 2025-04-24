@@ -219,7 +219,7 @@ func (w *Writer) Write(v Value) error {
 	return nil
 }
 
-func readInstructions(conn net.Conn) error {
+func readInstructions(conn net.Conn, aof *Aof) error {
 	resp := NewResp(conn)
 
 	value, err := resp.Read()
@@ -255,6 +255,11 @@ func readInstructions(conn net.Conn) error {
 		}
 		writer.Write(Value{typ: "error", str: fmt.Sprintf("ERR unknown command '%s', with args beginning with: %s", command, argStrings)})
 		return nil
+	}
+
+	// Persist data
+	if command == "SET" || command == "HSET" {
+		aof.Write(value)
 	}
 
 	writer.Write(handler(args))
