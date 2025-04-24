@@ -38,9 +38,9 @@ You can then connect to the server using any Redis client, including the officia
 ## Potential Improvements
 
 1. Data Persistence
-   - [ ] Add support for saving data to disk
-   - [ ] Implement Redis RDB-style persistence
-   - [ ] Add AOF (Append Only File) logging
+   - [x] Add support for saving data to disk
+   - [x] Implement Redis RDB-style persistence
+   - [x] Add AOF (Append Only File) logging
 
 2. Additional Commands
    - [ ] Add support for Lists (LPUSH, RPUSH, LRANGE, etc.)
